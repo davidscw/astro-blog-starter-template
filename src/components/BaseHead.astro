@@ -45,3 +45,30 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+<script is:inline>
+        const applyInitialTheme = () => {
+                if (typeof window === 'undefined') {
+                        return;
+                }
+
+                const getStoredTheme = () => {
+                        try {
+                                const storedTheme = window.localStorage.getItem('theme');
+                                return storedTheme === 'dark' || storedTheme === 'light' ? storedTheme : null;
+                        } catch (error) {
+                                return null;
+                        }
+                };
+
+                const getPreferredTheme = () =>
+                        window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+                const theme = getStoredTheme() ?? getPreferredTheme();
+
+                document.documentElement.dataset.theme = theme;
+                document.documentElement.style.colorScheme = theme;
+        };
+
+        applyInitialTheme();
+</script>
