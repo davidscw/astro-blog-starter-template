@@ -27,11 +27,13 @@ These are defined in global CSS and control color and elevation.
 - Base sizing: 20px on desktop, 18px under 720px
 - Headings scale: h1 3.052em, h2 2.441em, h3 1.953em, h4 1.563em, h5 1.25em
 - Body line-height: 1.7; headings 1.2
+- Headings: color rgb(var(--black)); line-height 1.2.
 
 ## 3) Global layout and spacing
 - Page container main: 720px fixed width with responsive max-width and center alignment; 3em vertical padding (1em under 720px)
 - Images: max-width: 100%; 8px radius; hero images get box-shadow
 - Code blocks: padded and rounded; inline code has gray bg
+- Body: linear-gradient(var(--gray-gradient)) applied, sized to 600px height.
 
 ## 4) Blog post layout
 - BlogPost layout overrides main to be edge-to-edge and centers the inner .prose at 720px
@@ -43,6 +45,7 @@ These are defined in global CSS and control color and elevation.
 - Active link: underline + heavier weight
 - Responsive: hide social links below 720px
 - Elevation: white bg with subtle box-shadow
+- Active state is determined by `HeaderLink.astro` based on current pathname; active gets underline + heavier weight.
 
 ## 6) Footer
 - Centered content; gradient background; gray text
@@ -116,6 +119,19 @@ body {
 }
 ```
 
+```52:61:src/styles/global.css
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 0.5rem 0;
+  color: rgb(var(--black));
+  line-height: 1.2;
+}
+```
+
 ```62:76:src/styles/global.css
 h1 { font-size: 3.052em; }
 h2 { font-size: 2.441em; }
@@ -177,7 +193,7 @@ hr { border: none; border-top: 1px solid rgb(var(--gray-light)); }
 
 ### Appendix C — Blog post layout
 
-```16:44:src/layouts/BlogPost.astro
+```16:54:src/layouts/BlogPost.astro
 <style>
   main {
     width: calc(100% - 2em);
@@ -281,5 +297,37 @@ hr { border: none; border-top: 1px solid rgb(var(--gray-light)); }
   .social-links { display: flex; justify-content: center; gap: 1em; margin-top: 1em; }
   .social-links a { text-decoration: none; color: rgb(var(--gray)); }
   .social-links a:hover { color: rgb(var(--gray-dark)); }
+</style>
+```
+
+### Appendix F — BaseHead (global import & font preloads)
+
+```2:5:src/components/BaseHead.astro
+// Import the global.css file here so that it is included on
+// all pages through the use of the <BaseHead /> component.
+import '../styles/global.css';
+```
+
+```24:25:src/components/BaseHead.astro
+<link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
+<link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin />
+```
+
+### Appendix G — HeaderLink (active link logic & styles)
+
+```6:10:src/components/HeaderLink.astro
+const { href, class: className, ...props } = Astro.props;
+const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
+const subpath = pathname.match(/[^\/]+/g);
+const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
+```
+
+```12:24:src/components/HeaderLink.astro
+<a href={href} class:list={[className, { active: isActive }]} {...props}>
+  <slot />
+</a>
+<style>
+  a { display: inline-block; text-decoration: none; }
+  a.active { font-weight: bolder; text-decoration: underline; }
 </style>
 ```
