@@ -2,6 +2,7 @@
   "name": "astro-blog-starter-template",
   "description": "Build a personal website, blog, or portfolio with Astro.",
   "private": true,
+  "version": "0.1.0",
   "cloudflare": {
     "label": "Astro Framework Starter",
     "products": [
@@ -30,7 +31,12 @@
     "check": "astro build && tsc && wrangler deploy --dry-run",
     "deploy": "wrangler deploy",
     "dev": "astro dev",
-    "preview": "astro build && wrangler dev"
+    "preview": "astro build && wrangler dev",
+
+    "version:major": "npm version major -m 'release: v%s (major: core/system)'",
+    "version:minor": "npm version minor -m 'release: v%s (minor: feature)'",
+    "version:patch": "npm version patch -m 'release: v%s (patch: bugfix)'",
+    "release:push": "git push --follow-tags"
   },
   "type": "module"
 }
