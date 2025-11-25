@@ -1,0 +1,67 @@
+name: Version bump on merged PR
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  bump:
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine bump type
+        id: decide
+        run: |
+          TYPE=""
+          TITLE="${{ github.event.pull_request.title }}"
+          BODY="${{ github.event.pull_request.body }}"
+          HEAD="${{ github.event.pull_request.head.ref }}"
+          LABELS='${{ toJson(github.event.pull_request.labels) }}'
+
+          if echo "$LABELS" | grep -qi '"name":"major"'; then TYPE=major; fi
+          if echo "$TITLE" | grep -qi '\[major\]'; then TYPE=major; fi
+          if echo "$BODY"  | grep -qi 'BREAKING CHANGE'; then TYPE=major; fi
+
+          if [ -z "$TYPE" ]; then
+            if echo "$HEAD" | grep -qE '^feat\/'; then TYPE=minor; fi
+            if echo "$LABELS" | grep -qi '"name":"feature"'; then TYPE=minor; fi
+          fi
+
+          if [ -z "$TYPE" ]; then
+            if echo "$HEAD" | grep -qE '^fix\/|^bugfix\/'; then TYPE=patch; fi
+            if echo "$LABELS" | grep -qi '"name":"bug"'; then TYPE=patch; fi
+          fi
+
+          echo "type=$TYPE" >> $GITHUB_OUTPUT
+
+      - name: Abort if no bump
+        if: steps.decide.outputs.type == ''
+        run: echo 'No version bump needed' && exit 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Bump version and tag
+        run: |
+          case "${{ steps.decide.outputs.type }}" in
+            major) npm version major -m "release: v%s (major: core/system)" ;;
+            minor) npm version minor -m "release: v%s (minor: feature)" ;;
+            patch) npm version patch -m "release: v%s (patch: bugfix)" ;;
+          esac
+          git push --follow-tags
