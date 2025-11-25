@@ -1,6 +1,6 @@
 # Astro Starter Kit: Blog
 
-English（当前） | [简体中文](./README_CN.md)
+English (current) | [繁體中文](./README.zh.md) | [简体中文](./README_CN.md)
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/astro-blog-starter-template)
 
