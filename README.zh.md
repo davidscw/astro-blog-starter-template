@@ -66,6 +66,9 @@ Astro 會在 `src/pages/` 目錄中尋找 `.astro` 或 `.md` 檔案。每個檔�
 ## 內容作者檢查清單（非技術）
 目前請參考英文版說明的對應章節：[`README.md#content-author-checklist-non-technical`](./README.md#content-author-checklist-non-technical)。
 
+## 設計系統
+參考 [./docs/UI_DESIGN_LAYOUT.md](./docs/UI_DESIGN_LAYOUT.md)（英文）了解視覺系統、版面與元件準則。
+
 ## 👀 了解更多
 查看 [Astro 文件](https://docs.astro.build) 或加入 [Discord 社群](https://astro.build/chat)。
 <!-- 連結：後續可新增繁體中文社群/討論區連結。 -->

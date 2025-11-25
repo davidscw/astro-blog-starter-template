@@ -42,7 +42,7 @@ All commands are run from the root of the project, from a terminal:
 
 | Command                           | Action                                           |
 | :-------------------------------- | :----------------------------------------------- |
-| `npm install`                     | Installs dependencies                            |
+| `npm install`                     | Installs package dependencies                    |
 | `npm run dev`                     | Starts local dev server at `localhost:4321`      |
 | `npm run build`                   | Build your production site to `./dist/`          |
 | `npm run preview`                 | Preview your build locally, before deploying     |
@@ -105,6 +105,9 @@ heroImage: "/my-image.jpg"   # optional
 - Deployment to Cloudflare: follow the deployment doc or your team’s release cadence.
 
 Troubleshooting: If you need help, ping a maintainer; you don’t need local tools to contribute content.
+
+## Design System
+See [./docs/UI_DESIGN_LAYOUT.md](./docs/UI_DESIGN_LAYOUT.md) for the visual system (tokens), layout structure, and component guidelines.
 
 ## 👀 Want to learn more?
 
