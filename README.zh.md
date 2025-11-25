@@ -23,14 +23,7 @@
 <!-- dash-content-end -->
 
 ## 快速開始
-在此倉庫之外，你可以使用 [C3](https://developers.cloudflare.com/pages/get-started/c3/)（`create-cloudflare` CLI）基於此模板建立新專案：
-```bash
-npm create cloudflare@latest -- --template=cloudflare/templates/astro-blog-starter-template
-```
-<!-- 待補充：常見安裝問題與代理/網路環境說明。 -->
-
-線上示例部署：
-https://astro-blog-starter-template.templates.workers.dev
+若要使用此模板開始新專案並了解如何部署，請參見下方「部署」章節。
 
 ## 🚀 專案結構
 Astro 會在 `src/pages/` 目錄中尋找 `.astro` 或 `.md` 檔案。每個檔案會依其檔名對應為路由。
@@ -50,9 +43,28 @@ Astro 會在 `src/pages/` 目錄中尋找 `.astro` 或 `.md` 檔案。每個檔�
 | `npm run preview`                 | 本機預覽正式建置                                  |
 | `npm run astro ...`               | 執行 Astro CLI（如 `astro add`, `astro check`）   |
 | `npm run astro -- --help`         | 查看 Astro CLI 說明                               |
-| `npm run build && npm run deploy` | 將正式建置部署到 Cloudflare                       |
-| `npm wrangler tail`               | 檢視所有 Workers 的即時日誌                        |
+| `npm run build && npm run deploy` | Cloudflare 部署請見下方「部署」章節                |
+| `npm wrangler tail`               | 檢視所有 Workers 的即時日誌（詳見「部署」）        |
 <!-- 待補充：Windows/Unix 差異、Node 版本需求、環境變數設定。 -->
+
+## DevOps 與版本管理
+
+本倉庫採用語意化版本（x.y.z），並提供腳本與（可選）CI 整合。
+- 版本政策：請見 [VERSIONING.md](./VERSIONING.md)
+- 手動發佈：
+  - 修補版（Patch）：`npm run version:patch && npm run release:push`
+  - 次版（Minor）：`npm run version:minor && npm run release:push`
+  - 主版（Major）：`npm run version:major && npm run release:push`
+- 自動化（若已在 CI 設定）：
+  - 合併 PR 至 `main` 後，CI 依分支/標籤調整版本：
+    - `feat/*` → 次版、`fix/*|bugfix/*` → 修補版、`major` 標籤或標題含 `[major]` → 主版
+  - 推送標籤時建立 GitHub Release。
+
+## 部署
+請見 [docs/DEPLOYING_TO_CLOUDFLARE.md](./docs/DEPLOYING_TO_CLOUDFLARE.md) 以獲得 Cloudflare 部署、日誌與 CLI 使用方式。
+
+## 內容作者檢查清單（非技術）
+目前請參考英文版說明的對應章節：[`README.md#content-author-checklist-non-technical`](./README.md#content-author-checklist-non-technical)。
 
 ## 👀 了解更多
 查看 [Astro 文件](https://docs.astro.build) 或加入 [Discord 社群](https://astro.build/chat)。

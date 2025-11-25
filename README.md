@@ -24,13 +24,7 @@ Features:
 
 ## Getting Started
 
-Outside of this repo, you can start a new project with this template using [C3](https://developers.cloudflare.com/pages/get-started/c3/) (the `create-cloudflare` CLI):
-
-```bash
-npm create cloudflare@latest -- --template=cloudflare/templates/astro-blog-starter-template
-```
-
-A live public deployment of this template is available at [https://astro-blog-starter-template.templates.workers.dev](https://astro-blog-starter-template.templates.workers.dev)
+To start a new project using this template and learn how to deploy, see the Deployment section below.
 
 ## 🚀 Project Structure
 
@@ -54,8 +48,63 @@ All commands are run from the root of the project, from a terminal:
 | `npm run preview`                 | Preview your build locally, before deploying     |
 | `npm run astro ...`               | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help`         | Get help using the Astro CLI                     |
-| `npm run build && npm run deploy` | Deploy your production site to Cloudflare        |
-| `npm wrangler tail`               | View real-time logs for all Workers              |
+| `npm run build && npm run deploy` | See Deployment for Cloudflare instructions       |
+| `npm wrangler tail`               | View real-time logs for all Workers (see Deployment) |
+
+## DevOps & Versioning
+
+This repo uses semantic versioning (x.y.z) with scripts and, optionally, CI.
+- Version policy: see [VERSIONING.md](./VERSIONING.md)
+- Manual release:
+  - Patch: `npm run version:patch && npm run release:push`
+  - Minor: `npm run version:minor && npm run release:push`
+  - Major: `npm run version:major && npm run release:push`
+- Automation (if configured in CI):
+  - On merged PRs into `main`, CI bumps version based on branch/labels:
+    - `feat/*` → minor, `fix/*|bugfix/*` → patch, `major` label or `[major]` in title → major
+  - A GitHub Release is created on tag push.
+
+## Deployment
+See [docs/DEPLOYING_TO_CLOUDFLARE.md](./docs/DEPLOYING_TO_CLOUDFLARE.md) for Cloudflare deployment, logs, and CLI usage.
+
+## Content author checklist (non-technical)
+Use this list to prepare and submit a new blog post.
+
+1) Prepare content
+- Title (human-friendly)
+- Short description (1–2 sentences)
+- Publication date (e.g., “Jan 31 2025”)
+- Optional: Updated date
+- Hero image (optional): JPG/PNG 1200×630, place under `public/` and note its path, e.g., `/my-image.jpg`
+
+2) Create the post file
+- File path: `src/content/blog/<slug>.md` (or `.mdx` for advanced embeds)
+- Paste this frontmatter at the top:
+
+```md
+---
+title: "My post"
+description: "One-line summary"
+pubDate: "Jan 31 2025"
+updatedDate: "Feb 10 2025" # optional
+heroImage: "/my-image.jpg"   # optional
+---
+```
+
+- Write your content below the frontmatter. For MDX, you can embed components.
+
+3) Open a Pull Request
+- From your branch, open a PR with:
+  - If it’s a new feature/content: branch `feat/<topic>`
+  - If it’s a fix/tweak: branch `fix/<topic>`
+- Fill the PR template and pick the release type.
+
+4) Review and publish
+- A maintainer merges the PR into `main`.
+- CI may bump the version and create a tag/release.
+- Deployment to Cloudflare: follow the deployment doc or your team’s release cadence.
+
+Troubleshooting: If you need help, ping a maintainer; you don’t need local tools to contribute content.
 
 ## 👀 Want to learn more?
 
